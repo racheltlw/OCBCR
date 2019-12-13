@@ -16,7 +16,7 @@ The goal of OCBCR is to allow information from a range of OCBC APIs to be access
 
 You can install the development version from [GitHub](https://github.com/racheltlw) with:
 
-``` {r}
+``` {r warning=FALSE, message=FALSE, results=FALSE}
 # install.packages("devtools")
 devtools::install_github("racheltlw/OCBCR", build_vignettes = TRUE)
 ```
