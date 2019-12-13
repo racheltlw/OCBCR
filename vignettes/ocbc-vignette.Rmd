@@ -1,0 +1,107 @@
+---
+title: "ocbc-vignette"
+author: "Rachel Lui Win Tan" 
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{ocbc-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Using the OCBCR Package 
+
+## 1. Accessing the APIs 
+
+#### API Key, Secret and Access Token
+
+The Overseas-Chinese Banking Corporation Limited (OCBC) is a Singapore-based bank that has operations spanning 17 countries. OCBC bank provides developers with more than 250 APIs to work with. The APIs fall under the category of Informational and Transactional, with the informational APIs requiring an access token for authorization, and the Transactional APIs requiring OAuth2.0 Authentication. 
+
+However the OCBCR package only includes the Informational APIs. All Informational API calls require an access token, which is basically a password through which you can access the API and it helps the OCBC developers to identify who is using their API. Hence please keep your API confidential and do not share it or post it online! 
+In order to use the OCBCR package, please sign up for an API Access Token [through this link](https://api.ocbc.com/store/signUp). You will receive an API Key, an API Secret and an Access Token. You will mostly need the access token to use this package.
+
+In many of the examples in the OCBCR package, the API access token is stored as `Sys.getenv("ACC_TOKEN_OCBC")`. This means that the API access token is stored in the Renvironment file which keeps it private. You can do this through `usethis::edit_r_environ()` and assigning your access token like this `MY_ACCESS_TOKEN = (your access token)`.
+
+#### Subscriptions 
+
+After acquring your access token, you then need to subscribe to the OCBC API(s) that you would like to use. This is quite repetitive, but is very simple to do. For example, if you would like to use the ocbc_accounts function included in this OCBCR package, you would need to subscribe to all the APIs in the 'Accounts' category on [this page] (https://api.ocbc.com/store/api_products). You can do this through the API console tab. This way you will be able to these APIs with the same access token. In order to use the full OCBCR package, please subscribe to **all** the APIs in the "Informational" section. 
+
+#### Installation 
+
+This package is not available on CRAN. Please use the following code to install OCBCR on RStudio.  
+
+```{r, eval=FALSE}
+install.packages('devtools')
+devtools::install_github('racheltlw/OCBCR')
+```
+
+This will download the `OCBCR` package from my Github repository into your RStudio. Then you can load the package by calling `library(OCBCR)`.
+
+## 2. OCBCR functions 
+
+There are numberous OCBC Informational APIs available and these APIs are grouped into categories based on the information they provide. Usually, an R-package make these APIs accessible individually, with one function corresponding to one API. However, with many of the API calls being very similar, this process can be made more efficient. Each OCBCR function accesses a whole *category* of APIs, with the individual APIs being accessed by specifying the first argument of the function, the "type". (e.g By changing the argument `account_type` in the `ocbc_accounts` function, the user can access 6 different APIs.) 
+
+In total the OCBCR package makes 38 APIs accessible through 7 functions. 
+
+#### Accounts 
+
+This function makes the Accounts API category easily accessible in R. The API allows the user to retrieve a dataframe of information about a specified account. 
+
+* Users can check the specific documentation by calling `?ocbc_accounts`
+* Users may filter the accounts by country, subcategory, product name and benefit to get a particular account type
+* Users may leave out optional arguments in order to get a full list of all the accounts in the specified category
+* If there is no content retrieved by the API, the function will return an empty dataframe 
+
+Here is an example of what you can expect when using `ocbc_accounts`
+```{r message = FALSE, warning = FALSE}
+library(OCBCR)
+accounts_example <- ocbc_accounts("Children", acctoken = Sys.getenv("ACC_TOKEN_OCBC"), country = "SG", productName = "Mighty Savers")
+kable(accounts_example)
+```
+
+
+#### Cards
+
+This function makes the Cards API category easily accessible in R. There are 2 main types of information - advisory (`card_type = "Credit Advisor` or `"Debit Advisor"`) and rewards (`card_type = "Credit Promotions"` or `"Rewards"`). 
+
+* Note that the Credit Cards category (`card_type = "Credit"`) does not yield information about Credit Card products as the API currently does not return data. 
+* Information can be filtered by country, product type, keyword, tag, name, address, category, merchant and price. Users should refer to the documentation for more specific details. 
+* Users can also specify `limit` (default is 10) to increase or decrease the number of items returned. This is applicable to promotions and rewards. 
+
+Here is an example of what you can expect when using `ocbc_cards` 
+```{r message=FALSE, warning=FALSE}
+cards_example <- ocbc_cards("Rewards", acctoken = Sys.getenv("ACC_TOKEN_OCBC"), limit = "3")
+kable(cards_example)
+```
+
+#### Insurance 
+
+This function makes the 
+
+
+```{r}
+insurance_example <- ocbc_insurance("Travel", acctoken = Sys.getenv("ACC_TOKEN_OCBC"))
+kable(insurance_example)
+```
+
+
+#### Investments 
+
+
+#### Loans 
+
+
+
+#### Locators 
+
+
+
+
+#### Rates 
