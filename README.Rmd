@@ -1,0 +1,34 @@
+---
+title: 'OCBCR'
+author: 'Rachel Lui Win Tan'
+output:  
+  html_document:
+    keep_md: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+The goal of OCBCR is to allow information from a range of OCBC APIs to be accessed easily in an R-readable format. 
+
+## Installation
+
+You can install the development version from [GitHub](https://github.com/racheltlw) with:
+
+``` {r}
+# install.packages("devtools")
+devtools::install_github("racheltlw/OCBCR", build_vignettes = TRUE)
+```
+## Example
+
+This is a basic example which shows you how to use the API 
+
+```{r fig.height=6, fig.width=8}
+library(OCBCR)
+locators_example <- ocbc_locator(locator_type = "ATM", acctoken = Sys.getenv("ACC_TOKEN_OCBC"), category = 1, country = "SG")
+knitr::kable(head(locators_example[[1]])[ , 1:7]) #some formatting for display sake 
+locators_example[[2]] 
+```
+
+In that case, don't forget to commit and push the resulting figure files, so they display on GitHub!
