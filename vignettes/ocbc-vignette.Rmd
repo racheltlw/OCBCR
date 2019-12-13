@@ -8,13 +8,11 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
+  collapse = TRUE)
 ```
+
 
 # Using the OCBCR Package 
 
@@ -63,7 +61,7 @@ Here is an example of what you can expect when using `ocbc_accounts`
 ```{r message = FALSE, warning = FALSE}
 library(OCBCR)
 accounts_example <- ocbc_accounts("Children", acctoken = Sys.getenv("ACC_TOKEN_OCBC"), country = "SG", productName = "Mighty Savers")
-kable(accounts_example)
+accounts_example
 ```
 
 
@@ -77,31 +75,90 @@ This function makes the Cards API category easily accessible in R. There are 2 m
 
 Here is an example of what you can expect when using `ocbc_cards` 
 ```{r message=FALSE, warning=FALSE}
-cards_example <- ocbc_cards("Rewards", acctoken = Sys.getenv("ACC_TOKEN_OCBC"), limit = "3")
-kable(cards_example)
+cards_example <- ocbc_cards("Rewards", acctoken = Sys.getenv("ACC_TOKEN_OCBC"), limit = "1")
+cards_example
 ```
 
 #### Insurance 
 
-This function makes the 
+This function makes the Insurance API category easily accessible in R. The API allows the user to retrieve a dataframe of information about a specified type of insurance. 
 
+* Users may filter the accounts by subcategory, product name and benefit to get a particular insurance type
+* Users may leave out optional arguments in order to get a full list of all the policies in the specified category
+* If there is no content retrieved by the API, the function will return an empty dataframe 
 
-```{r}
+Here is an example of what you can expect when using `ocbc_insurance`
+```{r tidy = TRUE}
 insurance_example <- ocbc_insurance("Travel", acctoken = Sys.getenv("ACC_TOKEN_OCBC"))
-kable(insurance_example)
+insurance_example
+  
 ```
 
 
 #### Investments 
 
+This function makes the Investments API category easily accessible in R. The API allows the user to retrieve a dataframe of information about a specified type of investment. 
+
+* Users may filter the investments by product name and benefit to get a particular investment type.
+* Users may leave out optional arguments in order to get a full list of all the investments in the specified category
+* If there is no content retrieved by the API, the function will return an empty dataframe 
+
+Here is an example of what you can expect when using `ocbc_investments`
+
+```{r}
+investment_example <- ocbc_investments("Bonds", acctoken = Sys.getenv("ACC_TOKEN_OCBC"))
+investment_example
+```
 
 #### Loans 
 
+This function makes the Loans API category easily accessible in R. The API allows the user to retrieve a dataframe of information about a specified type of loan. 
+
+* Users may filter the loans by subcategory, product name and benefit to get a particular loan type.
+* Users may leave out optional arguments in order to get a full list of all the loans in the specified category
+* If there is no content retrieved by the API, the function will return an empty dataframe 
+
+Here is an example of what you can expect when using `ocbc_loans`
+```{r}
+loan_example <- ocbc_loans("Car", acctoken = Sys.getenv("ACC_TOKEN_OCBC"))
+loan_example
+```
 
 
 #### Locators 
 
+This function makes the Locators API category easily accessible in R. The API allows the user to retrieve a list containing a dataframe of information about a specified type of loan, as well as a map (of Singapore or Malaysia) marking out all the locators in that dataframe, plotted according to latitude and longitude. 
 
+* Users may filter the locators by country (Singapore or Malaysia), landmark, latitude, longitude and radius and can consult the documentation for more information
+* Users may leave out optional arguments in order to get a all the locators in the specified category
+* If there is no content retrieved by the API, the function will return an empty dataframe 
 
+Here is an example of what you can expect when using `ocbc_locators`
+
+The dataframe: 
+```{r}
+locators_example <- ocbc_locator(locator_type = "ATM", acctoken = Sys.getenv("ACC_TOKEN_OCBC"), category = 1, country = "SG")
+knitr::kable(head(locators_example[[1]])[ , 1:7]) #some formatting for display sake 
+```
+
+And the map: 
+```{r fig.height=6, fig.width=8}
+locators_example[[2]] 
+
+```
 
 #### Rates 
+This function makes the Rates API category easily accessible in R. The API allows the user to retrieve a dataframe of information about the specified type of rate. Specifically for `rate_type = "fixed deposit"`, the function returns a list containing a dataframe of information, as well as a graph of the fixed deposit interest rates by duration (month) of deposit. 
+
+* Users may filter the locators by `local_currency` (Singapore or Malaysia), and for `rate_ty[e = "forex"` they may also filter by `foreign_currency` and hence find the specific exchange rate. 
+* Users may leave out optional arguments in order to get a all the rates in the specified category
+* If there is no content retrieved by the API, the function will return an empty dataframe or list
+
+Here is an example of what you can expect when using `ocbc_rates`
+
+```{r fig.height=6, fig.width=8}
+rates_example <- ocbc_rates("fixed deposit", acctoken = Sys.getenv("ACC_TOKEN_OCBC"))
+knitr::kable(head(rates_example[[1]]))
+rates_example[[2]]
+```
+

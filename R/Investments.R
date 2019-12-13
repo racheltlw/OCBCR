@@ -69,7 +69,7 @@ ocbc_investments <- function(investment_type = c('Bonds', 'Equity and Forex', 'L
     account_output <- investment_function("https://api.ocbc.com:8243/investments/unittrust/1.0")
   }
   else{
-    print("Invalid investment type!")
+    stop("Invalid investment type!")
   }
 
   return(account_output)
