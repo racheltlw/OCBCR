@@ -10,25 +10,21 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-The goal of OCBCR is to allow information from a range of OCBC APIs to be accessed easily in an R-readable format. 
+The goal of OCBCR is to allow information from OCBC APIs to be accessed easily in an R-readable format.The Overseas-Chinese Banking Corporation Limited (OCBC) is a Singapore-based bank that has operations spanning 17 countries. OCBC bank provides developers with more than 250 APIs to work with. The APIs fall under the category of Informational and Transactional, however due to complications with the OAuth 2.0 for Transactional APIs, this package only focuses on making the Informational APIs accessible. I hope that this package can improve the accessibility of the APIs for developers looking to work with OCBC data. 
 
-## Installation
+# Installation
 
 You can install the development version from [GitHub](https://github.com/racheltlw) with:
 
-``` {r warning=FALSE, message=FALSE, results=FALSE}
-# install.packages("devtools")
+``` {r, eval=FALSE}
+install.packages("devtools")
 devtools::install_github("racheltlw/OCBCR", build_vignettes = TRUE)
 ```
-## Example
+# Vignettes and Documentation
 
-This is a basic example which shows you how to use the API 
+You can find the full documentation of how to use the package [here]( https://racheltlw.github.io/OCBCR/)
 
-```{r fig.height=6, fig.width=8}
-library(OCBCR)
-locators_example <- ocbc_locator(locator_type = "ATM", acctoken = Sys.getenv("ACC_TOKEN_OCBC"), category = 1, country = "SG")
-knitr::kable(head(locators_example[[1]])[ , 1:7]) #some formatting for display sake 
-locators_example[[2]] 
-```
+# Contact 
+For any bugs or issues please raise and issue on Github
 
 In that case, don't forget to commit and push the resulting figure files, so they display on GitHub!
